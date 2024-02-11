@@ -1,181 +1,106 @@
-# FireSim: Fast and Effortless FPGA-accelerated Hardware Simulation with On-Prem and Cloud Flexibility
-
-![FireSim Documentation Status](https://readthedocs.org/projects/firesim/badge/)
-![Github Actions Status](https://github.com/firesim/firesim/actions/workflows/firesim-run-tests.yml/badge.svg)
-
-| We held the First FireSim and Chipyard User/Developer Workshop at ASPLOS 2023 on March 26, 2023! This workshop featured a full-day of talks from users and developers in the FireSim and Chipyard community. YouTube videos of the talks are available on the [2023 Workshop Page](https://fires.im/workshop-2023/)! |
-|--------|
-
-## Contents
-
-1. [Using FireSim](#using-firesim)
-2. [What is FireSim?](#what-is-firesim)
-3. [What can I simulate with FireSim?](#what-can-i-simulate-with-firesim)
-4. [Need help?](#need-help)
-5. [Contributing](#contributing)
-6. [Publications](#publications)
-
-## Using FireSim
-
-To get started with FireSim, you can find our extensive documentation and getting-started guide at
-[docs.fires.im](https://docs.fires.im). The FireSim codebase is open-source at
-[github.com/firesim/firesim](https://github.com/firesim/firesim) and we welcome pull requests and issues.
-You can also get help from the FireSim user community on our [User Forum](https://groups.google.com/forum/#!forum/firesim). 
-Additionally, we frequently run tutorials at various conferences
-and events; for overview purposes, you can find the most recent slide decks at [fires.im/tutorial-recent](https://fires.im/tutorial-recent) (you should still follow [docs.fires.im](https://docs.fires.im) for the most up to date getting-started guide).
-
-Another good overview from a recent event (in video format) can be found [on YouTube](https://www.youtube.com/watch?v=_leRHbe5t6M).
-
-## What is FireSim?
-
-FireSim is an [open-source](https://github.com/firesim/firesim)
-FPGA-accelerated full-system hardware simulation platform that makes
-it easy to validate, profile, and debug RTL hardware implementations
-at 10s to 100s of MHz. FireSim simplifies co-simulating 
-ASIC RTL with cycle-accurate hardware and software models for other system components (e.g. I/Os). FireSim can productively 
-scale from individual SoC simulations hosted on on-prem FPGAs (e.g., a single Xilinx Alveo board attached to a desktop) 
-to massive datacenter-scale simulations harnessing hundreds of cloud FPGAs (e.g., on Amazon EC2 F1).
-
-**Who's using and developing FireSim?** FireSim users across academia and industry (at 20+ institutions) have published over 40 papers using FireSim in many areas, including computer architecture, systems, networking, security, scientific computing, circuits, design automation, and more (see the [Publications page](https://fires.im/publications/)). FireSim has also been used in the development of shipping commercial silicon. FireSim was originally developed in the [Electrical Engineering and Computer Sciences
-Department][eecs] at the [University of California, Berkeley][berkeley], but now has industrial and academic contributors from all over the world.
-
-You can learn more about FireSim in the following places:
-
-* **FireSim website**: https://fires.im
-* **FireSim ISCA 2018 Paper**: [Paper PDF](https://sagark.org/assets/pubs/firesim-isca2018.pdf) | [IEEE Xplore](https://ieeexplore.ieee.org/document/8416816) | [ACM DL](https://dl.acm.org/citation.cfm?id=3276543) | [BibTeX](https://sagark.org/assets/pubs/firesim-isca2018.bib.txt) | Selected as one of IEEE Micro’s “Top Picks from Computer Architecture Conferences, 2018”.
-* **FireSim ISCA-50 Retrospective**: [Paper PDF](https://sites.coecis.cornell.edu/isca50retrospective/files/2023/06/Karandikar_2018_FireSim.pdf)
-* **FireSim documentation**: [https://docs.fires.im](https://docs.fires.im)
-* **Scala API Documentation**: [https://fires.im/firesim/latest/api/](https://fires.im/firesim/latest/api/)
-* **LatchUp 2023 Update Talk**: [YouTube](https://www.youtube.com/watch?v=_leRHbe5t6M)
-* **FireSim (+Chipyard) Tutorial**: [https://fires.im/tutorial-recent/](https://fires.im/tutorial-recent/)
-* **ASPLOS 2023 Tutorial Videos**: [YouTube Playlist](https://www.youtube.com/playlist?list=PL-YKJjRMRb9xe1RP4uoM69CRyXZZFy2ta)
-* **Updates/News**: [Changelog](/CHANGELOG.md) | [FireSim Blog](https://fires.im/blog/) | [Twitter](https://twitter.com/firesimproject)
-
-## What can I simulate with FireSim?
-
-FireSim can simulate arbitrary hardware designs written in
-[Chisel](https://chisel.eecs.berkeley.edu) or Verilog.
-With FireSim, users can write their own RTL (processors, accelerators, etc.) and
-run it at near-FPGA-prototype speeds on cloud or on-prem FPGAs, while obtaining
-performance results that match an ASIC implementation of the same design. 
-Depending on the hardware design and the simulation scale,
-FireSim simulations run at 10s to 100s of MHz. Users can also integrate
-custom software models for components that they don't need or want to write as RTL.
-To help construct a closed and deterministic simulated environment around a design, FireSim includes
-validated and high-performance HW/SW models for I/Os like DRAM, Ethernet, Disks, UART, and more.
-The [User Publications page][userpubs] links to a selection of papers written by FireSim users.
-
-FireSim was originally developed to simulate datacenters by combining
-open RTL for RISC-V processors with a custom cycle-accurate network simulation.
-By default, FireSim provides all the RTL and models necessary
-to cycle-exactly simulate from one to thousands of multi-core compute
-nodes, derived directly from silicon-proven and open target-RTL
-([RISC-V][riscv] [Rocket Chip][rocket-chip], [BOOM][boom], and [Chipyard][chipyard]), with an optional
-cycle-accurate network simulation tying them together. FireSim also
-provides a [Linux distribution](https://github.com/firesim/firemarshal)
-that is compatible with the RISC-V systems it simulates and
-[automates](https://docs.fires.im/en/latest/Advanced-Usage/Workloads/Defining-Custom-Workloads.html)
-the process of including new workloads into this Linux distribution.
-These simulations run fast
-enough to interact with Linux on the simulated system at the command line, [like
-a real
-computer](https://twitter.com/firesimproject/status/1031267637303508993). Users
-can even [SSH into simulated systems in
-FireSim](http://docs.fires.im/en/latest/Advanced-Usage/Miscellaneous-Tips.html#experimental-support-for-sshing-into-simulated-nodes-and-accessing-the-internet-from-within-simulations)
-and access the Internet from within them.
-
-Head to the [FireSim Website](https://fires.im) to learn more.
-
-## Need help?
-
-* Join the FireSim Mailing list: https://groups.google.com/forum/#!forum/firesim
-* Post an issue on this repo
-* Follow on Twitter for project updates: [@firesimproject](https://twitter.com/firesimproject)
-
-## Contributing
-
-* See [CONTRIBUTING.md](/CONTRIBUTING.md)
-
-## Publications
-
-### **ISCA 2018**: FireSim: FPGA-Accelerated Cycle-Exact Scale-Out System Simulation in the Public Cloud
-
-You can learn more about FireSim in our ISCA 2018 paper, which covers the overall FireSim infrastructure and large distributed simulations of networked clusters. This paper was selected as one of **IEEE Micro’s "Top Picks from Computer Architecture Conferences, 2018"** and for **"ISCA@50 25-year Retrospective 1996-2020"**.
-
-> Sagar Karandikar, Howard Mao, Donggyu Kim, David Biancolin, Alon Amid, Dayeol
-Lee, Nathan Pemberton, Emmanuel Amaro, Colin Schmidt, Aditya Chopra, Qijing
-Huang, Kyle Kovacs, Borivoje Nikolic, Randy Katz, Jonathan Bachrach, and Krste
-Asanović. **FireSim: FPGA-Accelerated Cycle-Exact Scale-Out System Simulation in
-the Public Cloud**. *In proceedings of the 45th International Symposium
-on Computer Architecture (ISCA’18)*, Los Angeles, CA, June 2018.
-
-[Paper PDF](https://sagark.org/assets/pubs/firesim-isca2018.pdf) | [IEEE Xplore](https://ieeexplore.ieee.org/document/8416816) | [ACM DL](https://dl.acm.org/citation.cfm?id=3276543) | [BibTeX](https://sagark.org/assets/pubs/firesim-isca2018.bib.txt)
-
-
-### **FPGA 2019**: FASED: FPGA-Accelerated Simulation and Evaluation of DRAM
-
-Our paper from FPGA 2019 details the DRAM model used in FireSim:
-
-> David Biancolin, Sagar Karandikar, Donggyu Kim, Jack Koenig, Andrew Waterman, Jonathan Bachrach, Krste Asanović, **FASED: FPGA-Accelerated Simulation and Evaluation of DRAM**, *In proceedings of the 27th ACM/SIGDA International Symposium on Field-Programmable Gate Arrays*, Seaside, CA, February 2018.
-
-[Paper PDF](https://people.eecs.berkeley.edu/~biancolin/papers/fased-fpga19.pdf) |
-[ACM DL](https://dl.acm.org/citation.cfm?id=3293894) |
-[BibTeX](https://people.eecs.berkeley.edu/~biancolin/bib/fased-fpga19.bib)
-
-### **IEEE Micro Top Picks of 2018**: FireSim: FPGA-Accelerated, Cycle-Accurate Scale-Out System Simulation in the Public Cloud
-
-This article discusses several updates since the FireSim ISCA 2018 paper:
-
-> Sagar Karandikar, Howard Mao, Donggyu Kim, David Biancolin, Alon Amid, Dayeol Lee, Nathan Pemberton, Emmanuel Amaro, Colin Schmidt, Aditya Chopra, Qijing Huang, Kyle Kovacs, Borivoje Nikolic, Randy Katz, Jonathan Bachrach, and Krste Asanović. **FireSim: FPGA-Accelerated Cycle-Exact Scale-Out System Simulation in the Public Cloud**. *IEEE Micro, vol. 39, no. 3, pp. 56-65, (Micro Top Picks 2018 Issue)*. May-June 2019.
-
-[Article PDF](https://sagark.org/assets/pubs/firesim-micro-top-picks2018.pdf)
-
-### **ICCAD 2019**: Golden Gate: Bridging The Resource-Efficiency Gap Between ASICs and FPGA Prototypes
-
-Our paper describing FireSim's Compiler, _Golden Gate_:
-
-> Albert Magyar, David T. Biancolin, Jack Koenig, Sanjit Seshia, Jonathan Bachrach, Krste Asanović, **Golden Gate: Bridging The Resource-Efficiency Gap Between ASICs and FPGA Prototypes**, *In proceedings of the 39th International Conference on Computer-Aided Design (ICCAD '19)*, Westminster, CO, November 2019.
-
-[Paper PDF](https://davidbiancolin.github.io/papers/goldengate-iccad19.pdf)
-
-### **ASPLOS 2020**: FirePerf: FPGA-Accelerated Full-System Hardware/Software Performance Profiling and Co-Design
-
-Our paper that discusses system-level profiling features in FireSim:
-
-> Sagar Karandikar, Albert Ou, Alon Amid, Howard Mao, Randy Katz, Borivoje Nikolić, and Krste Asanović, **FirePerf: FPGA-Accelerated Full-System Hardware/Software Performance Profiling and Co-Design**, *In Proceedings of the Twenty-Fifth International Conference on Architectural Support for Programming Languages and Operating Systems (ASPLOS 2020)*, Lausanne, Switzerland, March 2020.
-
-[Paper PDF](https://sagark.org/assets/pubs/fireperf-asplos2020.pdf)
-
-### **IEEE MICRO 2021**: Accessible, FPGA Resource-Optimized Simulation of Multi-Clock Systems in FireSim
-
-In this special issue, we describe the automated instance-multithreading optimization and support for multiple clock domains in the simulated target.
-
-> David Biancolin, Albert Magyar, Sagar Karandikar, Alon Amid, Borivoje Nikolić, Jonathan  Bachrach, Krste Asanović. **Accessible, FPGA Resource-Optimized Simulation of Multi-Clock Systems in FireSim**. *In IEEE Micro Volume: 41, Issue: 4, July-Aug. 1 2021*
-
-[Article PDF](https://davidbiancolin.github.io/papers/firesim-micro21.pdf)
-
-### **ISCA@50 Retrospective: 1996-2020**: FireSim: FPGA-Accelerated Cycle-Exact Scale-Out System Simulation in the Public Cloud
-
-This retrospective paper, included in the "ISCA@50 Retrospective: 1996-2020" collection, provides an update and retrospective
-on FireSim's development and evolution since the original ISCA 2018 paper.
-
-> Sagar Karandikar, Howard Mao, Donggyu Kim, David Biancolin, Alon Amid, Dayeol
-Lee, Nathan Pemberton, Emmanuel Amaro, Colin Schmidt, Aditya Chopra, Qijing
-Huang, Kyle Kovacs, Borivoje Nikolic, Randy Katz, Jonathan Bachrach, and Krste
-Asanović. **FireSim: FPGA-Accelerated Cycle-Exact Scale-Out System Simulation in
-the Public Cloud**. *In ISCA@50 Retrospective: 1996-2020*, 
-Edited by José F. Martínez and Lizy K. John, June 2023.
-
-[Retrospective PDF](https://sites.coecis.cornell.edu/isca50retrospective/files/2023/06/Karandikar_2018_FireSim.pdf)
-
-
-You can find other publications, including publications that *use* FireSim on the [FireSim Website](https://fires.im/publications/).
-
-[ucb-bar]: http://bar.eecs.berkeley.edu
-[eecs]: https://eecs.berkeley.edu
-[berkeley]: https://berkeley.edu
-[riscv]: https://riscv.org/
-[rocket-chip]: https://github.com/freechipsproject/rocket-chip
-[boom]: https://github.com/ucb-bar/riscv-boom
-[userpubs]: /publications.md#userpapers
-[chipyard]: https://github.com/ucb-bar/chipyard
+<div class="Box-sc-g0xbh4-0 bJMeLZ js-snippet-clipboard-copy-unpositioned" data-hpc="true"><article class="markdown-body entry-content container-lg" itemprop="text"><h1 tabindex="-1" dir="auto"><a id="user-content-firesim-fast-and-effortless-fpga-accelerated-hardware-simulation-with-on-prem-and-cloud-flexibility" class="anchor" aria-hidden="true" tabindex="-1" href="#firesim-fast-and-effortless-fpga-accelerated-hardware-simulation-with-on-prem-and-cloud-flexibility"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FireSim：快速、轻松的 FPGA 加速硬件仿真，具有本地和云灵活性</font></font></h1>
+<p dir="auto"><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/069a0ee2f6f58021a4795e035c647c5debc65cad6cc2303b02e2c3d3525e5047/68747470733a2f2f72656164746865646f63732e6f72672f70726f6a656374732f6669726573696d2f62616467652f"><img src="https://camo.githubusercontent.com/069a0ee2f6f58021a4795e035c647c5debc65cad6cc2303b02e2c3d3525e5047/68747470733a2f2f72656164746865646f63732e6f72672f70726f6a656374732f6669726573696d2f62616467652f" alt="FireSim 文档状态" data-canonical-src="https://readthedocs.org/projects/firesim/badge/" style="max-width: 100%;"></a>
+<a target="_blank" rel="noopener noreferrer" href="https://github.com/firesim/firesim/actions/workflows/firesim-run-tests.yml/badge.svg"><img src="https://github.com/firesim/firesim/actions/workflows/firesim-run-tests.yml/badge.svg" alt="Github 操作状态" style="max-width: 100%;"></a></p>
+<table>
+<thead>
+<tr>
+<th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">我们于2023年3月26日在ASPLOS 2023举办了第一届FireSim和Chipyard用户/开发者研讨会！本次研讨会的特色是 FireSim 和 Chipyard 社区的用户和开发人员进行了一整天的演讲。演讲的 YouTube 视频可在</font></font><a href="https://fires.im/workshop-2023/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2023 年研讨会页面</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">上观看！</font></font></th>
+</tr>
+</thead>
+</table>
+<h2 tabindex="-1" dir="auto"><a id="user-content-contents" class="anchor" aria-hidden="true" tabindex="-1" href="#contents"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">内容</font></font></h2>
+<ol dir="auto">
+<li><a href="#using-firesim"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">使用 FireSim</font></font></a></li>
+<li><a href="#what-is-firesim"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">什么是FireSim？</font></font></a></li>
+<li><a href="#what-can-i-simulate-with-firesim"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">我可以使用 FireSim 模拟什么？</font></font></a></li>
+<li><a href="#need-help"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">需要帮忙？</font></font></a></li>
+<li><a href="#contributing"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">贡献</font></font></a></li>
+<li><a href="#publications"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">刊物</font></font></a></li>
+</ol>
+<h2 tabindex="-1" dir="auto"><a id="user-content-using-firesim" class="anchor" aria-hidden="true" tabindex="-1" href="#using-firesim"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">使用 FireSim</font></font></h2>
+<p dir="auto"><font style="vertical-align: inherit;"></font><a href="https://docs.fires.im" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">要开始使用 FireSim，您可以在docs.fires.im</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">找到我们丰富的文档和入门指南
+</font><font style="vertical-align: inherit;">。 FireSim 代码库在</font></font><a href="https://github.com/firesim/firesim"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">github.com/firesim/firesim</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">上开源
+</font><font style="vertical-align: inherit;">，我们欢迎拉取请求和问题。您还可以从我们的</font></font><a href="https://groups.google.com/forum/#!forum/firesim" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">用户论坛</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">上的 FireSim 用户社区获得帮助</font><font style="vertical-align: inherit;">。此外，我们经常在各种会议和活动中提供教程；出于概述目的，您可以在</font></font><a href="https://fires.im/tutorial-recent" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">fires.im/tutorial-recent</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">上找到最新的幻灯片</font><font style="vertical-align: inherit;">（您仍应关注</font></font><a href="https://docs.fires.im" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">docs.fires.im</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">以获取最新的入门指南）。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"></font><a href="https://www.youtube.com/watch?v=_leRHbe5t6M" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">您可以在 YouTube 上</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">找到最近活动的另一个很好的概述（以视频格式）</font><font style="vertical-align: inherit;">。</font></font></p>
+<h2 tabindex="-1" dir="auto"><a id="user-content-what-is-firesim" class="anchor" aria-hidden="true" tabindex="-1" href="#what-is-firesim"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">什么是FireSim？</font></font></h2>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FireSim 是一款</font></font><a href="https://github.com/firesim/firesim"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">开源</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+FPGA 加速的全系统硬件仿真平台，可以轻松验证、分析和调试 10 到 100 MHz 的 RTL 硬件实现。 FireSim 简化了 ASIC RTL 与其他系统组件（例如 I/O）的周期精确硬件和软件模型的联合仿真。 FireSim 可以高效地从本地 FPGA 上托管的单个 SoC 仿真（例如，连接到桌面的单个 Xilinx Alveo 板）扩展到利用数百个云 FPGA（例如，在 Amazon EC2 F1 上）的大规模数据中心规模仿真。</font></font></p>
+<p dir="auto"><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">谁在使用和开发 FireSim？</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">学术界和工业界（20 多个机构）的 FireSim 用户已使用 FireSim 在许多领域发表了 40 多篇论文，包括计算机体系结构、系统、网络、安全、科学计算、电路、设计自动化等（请参阅出版物页面</font></font><a href="https://fires.im/publications/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">）</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">。 FireSim 还被用于运输商业芯片的开发。 FireSim 最初是由</font><a href="https://berkeley.edu" rel="nofollow"><font style="vertical-align: inherit;">加州大学伯克利</font></a><font style="vertical-align: inherit;">分校</font></font><a href="https://eecs.berkeley.edu" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">电气工程和计算机科学系</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">开发的，但现在拥有来自世界各地的工业和学术贡献者。</font></font><a href="https://berkeley.edu" rel="nofollow"><font style="vertical-align: inherit;"></font></a><font style="vertical-align: inherit;"></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">您可以在以下位置了解有关 FireSim 的更多信息：</font></font></p>
+<ul dir="auto">
+<li><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FireSim 网站</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：</font></font><a href="https://fires.im" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https ://fires.im</font></font></a></li>
+<li><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FireSim ISCA 2018 论文</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：</font></font><a href="https://sagark.org/assets/pubs/firesim-isca2018.pdf" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">论文 PDF</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> | </font></font><a href="https://ieeexplore.ieee.org/document/8416816" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">IEEE Xplore</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> | </font></font><a href="https://dl.acm.org/citation.cfm?id=3276543" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ACM DL</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> | </font></font><a href="https://sagark.org/assets/pubs/firesim-isca2018.bib.txt" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">BibTeX</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> |被选为 IEEE Micro 的“2018 年计算机架构会议精选”之一。</font></font></li>
+<li><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FireSim ISCA-50 回顾</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：</font></font><a href="https://sites.coecis.cornell.edu/isca50retrospective/files/2023/06/Karandikar_2018_FireSim.pdf" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">纸质 PDF</font></font></a></li>
+<li><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FireSim 文档</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">： https: </font></font><a href="https://docs.fires.im" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">//docs.fires.im</font></font></a></li>
+<li><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Scala API 文档</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">： https: </font></font><a href="https://fires.im/firesim/latest/api/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">//fires.im/firesim/latest/api/</font></font></a></li>
+<li><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">LatchUp 2023 更新讲座</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：</font></font><a href="https://www.youtube.com/watch?v=_leRHbe5t6M" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">YouTube</font></font></a></li>
+<li><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FireSim（+Chipyard）教程</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：</font></font><a href="https://fires.im/tutorial-recent/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https://fires.im/tutorial-recent/</font></font></a></li>
+<li><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ASPLOS 2023 教程视频</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：</font></font><a href="https://www.youtube.com/playlist?list=PL-YKJjRMRb9xe1RP4uoM69CRyXZZFy2ta" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">YouTube 播放列表</font></font></a></li>
+<li><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">更新/新闻</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：</font></font><a href="/firesim/firesim/blob/main/CHANGELOG.md"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">变更日志</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">| </font></font><a href="https://fires.im/blog/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FireSim 博客</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">|</font></font><a href="https://twitter.com/firesimproject" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">推特</font></font></a></li>
+</ul>
+<h2 tabindex="-1" dir="auto"><a id="user-content-what-can-i-simulate-with-firesim" class="anchor" aria-hidden="true" tabindex="-1" href="#what-can-i-simulate-with-firesim"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">我可以使用 FireSim 模拟什么？</font></font></h2>
+<p dir="auto"><font style="vertical-align: inherit;"></font><a href="https://chisel.eecs.berkeley.edu" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FireSim 可以模拟用Chisel</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">或 Verilog编写的任意硬件设计
+</font><font style="vertical-align: inherit;">。借助 FireSim，用户可以编写自己的 RTL（处理器、加速器等），并在云端或本地 FPGA 上以接近 FPGA 原型的速度运行，同时获得与相同设计的 ASIC 实现相匹配的性能结果。根据硬件设计和仿真规模，FireSim 仿真运行速度为 10 到 100 MHz。用户还可以为他们不需要或不想编写为 RTL 的组件集成自定义软件模型。为了帮助围绕设计构建封闭且确定性的模拟环境，FireSim 包含针对 DRAM、以太网、磁盘、UART 等 I/O 的经过验证的高性能硬件/软件模型。用户</font></font><a href="/firesim/firesim/blob/main/publications.md#userpapers"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">出版物页面</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">链接到 FireSim 用户撰写的精选论文。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FireSim 最初开发的目的是通过将 RISC-V 处理器的开放 RTL 与定制的周期精确网络模拟相结合来模拟数据中心。默认情况下，FireSim 提供从一个到数千个多核计算节点进行精确循环仿真所需的所有 RTL 和模型，直接源自经过硅验证的开放目标 RTL（</font></font><a href="https://riscv.org/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">RISC-V </font></font></a> <a href="https://github.com/freechipsproject/rocket-chip"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Rocket Chip</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">、</font></font><a href="https://github.com/ucb-bar/riscv-boom"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">BOOM</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">和</font></font><a href="https://github.com/ucb-bar/chipyard"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Chipyard</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">） ，并通过可选的周期精确网络模拟将它们连接在一起。 FireSim 还提供了一个</font><font style="vertical-align: inherit;">
+与其模拟的 RISC-V 系统兼容的
+</font></font><a href="https://github.com/firesim/firemarshal"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Linux 发行版，并</font></font></a><font style="vertical-align: inherit;"></font><a href="https://docs.fires.im/en/latest/Advanced-Usage/Workloads/Defining-Custom-Workloads.html" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">自动</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+将新工作负载纳入该 Linux 发行版的过程。这些模拟运行得足够快，可以在命令行上与模拟系统上的 Linux 进行交互，</font></font><a href="https://twitter.com/firesimproject/status/1031267637303508993" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">就像真正的计算机一样</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">。用户甚至可以</font></font><a href="http://docs.fires.im/en/latest/Advanced-Usage/Miscellaneous-Tips.html#experimental-support-for-sshing-into-simulated-nodes-and-accessing-the-internet-from-within-simulations" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">通过 SSH 连接到 FireSim 中的模拟系统</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+并从其中访问互联网。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">前往</font></font><a href="https://fires.im" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FireSim 网站</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">了解更多信息。</font></font></p>
+<h2 tabindex="-1" dir="auto"><a id="user-content-need-help" class="anchor" aria-hidden="true" tabindex="-1" href="#need-help"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">需要帮忙？</font></font></h2>
+<ul dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">加入 FireSim 邮件列表：</font></font><a href="https://groups.google.com/forum/#!forum/firesim" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https://groups.google.com/forum/#!forum/firesim</font></font></a></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">在此存储库上发布问题</font></font></li>
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">在 Twitter 上关注项目更新：</font></font><a href="https://twitter.com/firesimproject" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">@firesimproject</font></font></a></li>
+</ul>
+<h2 tabindex="-1" dir="auto"><a id="user-content-contributing" class="anchor" aria-hidden="true" tabindex="-1" href="#contributing"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">贡献</font></font></h2>
+<ul dir="auto">
+<li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">请参阅</font></font><a href="/firesim/firesim/blob/main/CONTRIBUTING.md"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">CONTRIBUTING.md</font></font></a></li>
+</ul>
+<h2 tabindex="-1" dir="auto"><a id="user-content-publications" class="anchor" aria-hidden="true" tabindex="-1" href="#publications"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">刊物</font></font></h2>
+<h3 tabindex="-1" dir="auto"><a id="user-content-isca-2018-firesim-fpga-accelerated-cycle-exact-scale-out-system-simulation-in-the-public-cloud" class="anchor" aria-hidden="true" tabindex="-1" href="#isca-2018-firesim-fpga-accelerated-cycle-exact-scale-out-system-simulation-in-the-public-cloud"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ISCA 2018</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：FireSim：公共云中 FPGA 加速周期精确横向扩展系统仿真</font></font></h3>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">您可以在我们的 ISCA 2018 论文中了解有关 FireSim 的更多信息，该论文涵盖了整体 FireSim 基础设施和网络集群的大型分布式模拟。该论文被选为</font></font><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">IEEE Micro 的“2018 年计算机架构会议最佳精选”</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">和</font></font><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">“ISCA@50 25 年回顾 1996-2020”</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">之一。</font></font></p>
+<blockquote>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Sagar Karandikar、Howard Mao、Donggyu Kim、David Biancolin、Alon Amid、Dayeol Lee、Nathan Pemberton、Emmanuel Amaro、Colin Schmidt、Aditya Chopra、Qijing Huang、Kyle Kovacs、Borivoje Nikolic、Randy Katz、Jonathan Bachrach 和 Krste Asanović。</font></font><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FireSim：公共云中的 FPGA 加速周期精确横向扩展系统仿真</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">。</font><font style="vertical-align: inherit;">2018 年 6 月在加利福尼亚州洛杉矶</font></font><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">举行的第 45 届计算机架构国际研讨会 (ISCA'18) 论文集。</font></font></em><font style="vertical-align: inherit;"></font></p>
+</blockquote>
+<p dir="auto"><a href="https://sagark.org/assets/pubs/firesim-isca2018.pdf" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">纸质 PDF</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> | </font></font><a href="https://ieeexplore.ieee.org/document/8416816" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">IEEE Xplore</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> | </font></font><a href="https://dl.acm.org/citation.cfm?id=3276543" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ACM DL</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> |</font></font><a href="https://sagark.org/assets/pubs/firesim-isca2018.bib.txt" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">书目词典</font></font></a></p>
+<h3 tabindex="-1" dir="auto"><a id="user-content-fpga-2019-fased-fpga-accelerated-simulation-and-evaluation-of-dram" class="anchor" aria-hidden="true" tabindex="-1" href="#fpga-2019-fased-fpga-accelerated-simulation-and-evaluation-of-dram"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FPGA 2019</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：FASED：FPGA 加速 DRAM 仿真和评估</font></font></h3>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">我们在 FPGA 2019 的论文详细介绍了 FireSim 中使用的 DRAM 模型：</font></font></p>
+<blockquote>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">David Biancolin、Sagar Karandikar、Donggyu Kim、Jack Koenig、Andrew Waterman、Jonathan Bachrach、Krste Asanović，</font></font><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FASED：FPGA 加速 DRAM 仿真和评估</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">，</font></font><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">第 27 届 ACM/SIGDA 国际现场可编程门阵列研讨会论文集</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">，海边，加利福尼亚州，2018 年 2 月。</font></font></p>
+</blockquote>
+<p dir="auto"><a href="https://people.eecs.berkeley.edu/~biancolin/papers/fased-fpga19.pdf" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">纸质 PDF</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> |
+ </font></font><a href="https://dl.acm.org/citation.cfm?id=3293894" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ACM DL</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> |
+</font></font><a href="https://people.eecs.berkeley.edu/~biancolin/bib/fased-fpga19.bib" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">书目词典</font></font></a></p>
+<h3 tabindex="-1" dir="auto"><a id="user-content-ieee-micro-top-picks-of-2018-firesim-fpga-accelerated-cycle-accurate-scale-out-system-simulation-in-the-public-cloud" class="anchor" aria-hidden="true" tabindex="-1" href="#ieee-micro-top-picks-of-2018-firesim-fpga-accelerated-cycle-accurate-scale-out-system-simulation-in-the-public-cloud"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2018 年 IEEE Micro 精选</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：FireSim：公共云中 FPGA 加速、周期精确的横向扩展系统仿真</font></font></h3>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">本文讨论自 FireSim ISCA 2018 论文发表以来的多项更新：</font></font></p>
+<blockquote>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Sagar Karandikar、Howard Mao、Donggyu Kim、David Biancolin、Alon Amid、Dayeol Lee、Nathan Pemberton、Emmanuel Amaro、Colin Schmidt、Aditya Chopra、Qijing Huang、Kyle Kovacs、Borivoje Nikolic、Randy Katz、Jonathan Bachrach 和 Krste Asanović。</font></font><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FireSim：公共云中的 FPGA 加速周期精确横向扩展系统仿真</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">。</font></font><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">IEEE 微，卷。 39，没有。 3，第 56-65 页，（Micro Top Picks 2018 年期）</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">。 2019 年 5 月至 6 月。</font></font></p>
+</blockquote>
+<p dir="auto"><a href="https://sagark.org/assets/pubs/firesim-micro-top-picks2018.pdf" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">文章 PDF</font></font></a></p>
+<h3 tabindex="-1" dir="auto"><a id="user-content-iccad-2019-golden-gate-bridging-the-resource-efficiency-gap-between-asics-and-fpga-prototypes" class="anchor" aria-hidden="true" tabindex="-1" href="#iccad-2019-golden-gate-bridging-the-resource-efficiency-gap-between-asics-and-fpga-prototypes"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ICCAD 2019</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：Golden Gate：弥合 ASIC 和 FPGA 原型之间的资源效率差距</font></font></h3>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">我们的论文描述了 FireSim 的编译器</font></font><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Golden Gate</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：</font></font></p>
+<blockquote>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Albert Magyar、David T. Biancolin、Jack Koenig、Sanjit Seshia、Jonathan Bachrach、Krste Asanović，《</font></font><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Golden Gate：弥合 ASIC 和 FPGA 原型之间的资源效率差距》</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">，</font></font><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">第 39 届国际计算机辅助设计会议 (ICCAD ' 19)</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">，科罗拉多州威斯敏斯特，2019 年 11 月。</font></font></p>
+</blockquote>
+<p dir="auto"><a href="https://davidbiancolin.github.io/papers/goldengate-iccad19.pdf" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">纸质PDF</font></font></a></p>
+<h3 tabindex="-1" dir="auto"><a id="user-content-asplos-2020-fireperf-fpga-accelerated-full-system-hardwaresoftware-performance-profiling-and-co-design" class="anchor" aria-hidden="true" tabindex="-1" href="#asplos-2020-fireperf-fpga-accelerated-full-system-hardwaresoftware-performance-profiling-and-co-design"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ASPLOS 2020</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：FirePerf：FPGA 加速的全系统硬件/软件性能分析和协同设计</font></font></h3>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">我们的论文讨论了 FireSim 中的系统级分析功能：</font></font></p>
+<blockquote>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Sagar Karandikar、Albert Ou、Alon Amid、Howard Mao、Randy Katz、Borivoje Nikolić 和 Krste Asanović，</font></font><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FirePerf：FPGA 加速的全系统硬件/软件性能分析和协同设计</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">，</font></font><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">第二十五届国际会议论文集编程语言和操作系统的架构支持 (ASPLOS 2020)</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">，瑞士洛桑，2020 年 3 月。</font></font></p>
+</blockquote>
+<p dir="auto"><a href="https://sagark.org/assets/pubs/fireperf-asplos2020.pdf" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">纸质PDF</font></font></a></p>
+<h3 tabindex="-1" dir="auto"><a id="user-content-ieee-micro-2021-accessible-fpga-resource-optimized-simulation-of-multi-clock-systems-in-firesim" class="anchor" aria-hidden="true" tabindex="-1" href="#ieee-micro-2021-accessible-fpga-resource-optimized-simulation-of-multi-clock-systems-in-firesim"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">IEEE MICRO 2021</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：FireSim 中多时钟系统的可访问、FPGA 资源优化仿真</font></font></h3>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">在本期特刊中，我们描述了自动化实例多线程优化以及对模拟目标中多个时钟域的支持。</font></font></p>
+<blockquote>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">大卫·比安科林、阿尔伯特·马扎尔、萨加尔·卡兰迪卡、阿隆·阿米德、博里沃耶·尼科利奇、乔纳森·巴克拉赫、克里斯特·阿萨诺维奇。</font></font><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FireSim 中多时钟系统的可访问、FPGA 资源优化仿真</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">。</font></font><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">IEEE 微卷：41，第 4 期，7 月至 8 月。 1 2021</font></font></em></p>
+</blockquote>
+<p dir="auto"><a href="https://davidbiancolin.github.io/papers/firesim-micro21.pdf" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">文章 PDF</font></font></a></p>
+<h3 tabindex="-1" dir="auto"><a id="user-content-isca50-retrospective-1996-2020-firesim-fpga-accelerated-cycle-exact-scale-out-system-simulation-in-the-public-cloud" class="anchor" aria-hidden="true" tabindex="-1" href="#isca50-retrospective-1996-2020-firesim-fpga-accelerated-cycle-exact-scale-out-system-simulation-in-the-public-cloud"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ISCA@50 回顾：1996-2020</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">：FireSim：公共云中的 FPGA 加速周期精确横向扩展系统仿真</font></font></h3>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">这篇回顾性论文包含在“ISCA@50 回顾：1996-2020”合集中，提供了自原始 ISCA 2018 论文以来 FireSim 的发展和演变的更新和回顾。</font></font></p>
+<blockquote>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Sagar Karandikar、Howard Mao、Donggyu Kim、David Biancolin、Alon Amid、Dayeol Lee、Nathan Pemberton、Emmanuel Amaro、Colin Schmidt、Aditya Chopra、Qijing Huang、Kyle Kovacs、Borivoje Nikolic、Randy Katz、Jonathan Bachrach 和 Krste Asanović。</font></font><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FireSim：公共云中的 FPGA 加速周期精确横向扩展系统仿真</font></font></strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">。</font></font><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ISCA@50 回顾：1996-2020</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">，José F. Martínez 和 Lizy K. John 编辑，2023 年 6 月。</font></font></p>
+</blockquote>
+<p dir="auto"><a href="https://sites.coecis.cornell.edu/isca50retrospective/files/2023/06/Karandikar_2018_FireSim.pdf" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">回顾性 PDF</font></font></a></p>
+<p dir="auto"><font style="vertical-align: inherit;"><a href="https://fires.im/publications/" rel="nofollow"><font style="vertical-align: inherit;">您可以在FireSim 网站上找到其他出版物，包括</font></a></font><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">使用</font></font></em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FireSim 的</font><font style="vertical-align: inherit;">出版物</font><font style="vertical-align: inherit;">。</font></font><a href="https://fires.im/publications/" rel="nofollow"><font style="vertical-align: inherit;"></font></a><font style="vertical-align: inherit;"></font></p>
+</article></div>
